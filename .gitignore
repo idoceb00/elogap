@@ -1,26 +1,60 @@
-# Compiled class file
-*.class
+# --------------------
+# OS
+# --------------------
+.DS_Store
+Thumbs.db
 
-# Log file
+# --------------------
+# IDE
+# --------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --------------------
+# Go
+# --------------------
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+*.coverprofile
+
+# Go build artifacts
 *.log
 
-# BlueJ files
-*.ctxt
+# --------------------
+# Node / Frontend
+# --------------------
+node_modules/
+dist/
+build/
+coverage/
+*.local
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Vite
+.vite/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
+# pnpm
+.pnpm-store/
+
+# --------------------
+# Env files
+# --------------------
+.env
+.env.*
+!.env.example
+
+# --------------------
+# Java (backup folder)
+# --------------------
+api-java/
+
+# --------------------
+# Archives
+# --------------------
 *.zip
 *.tar.gz
 *.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
-
-api-java/
