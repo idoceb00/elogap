@@ -8,15 +8,20 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8081" // use 8081 to avoid clashing with Java on 8080
-	}
+	port := getPort()
 
 	r := httptransport.NewRouter()
 
-	log.Printf("Go API listening on :%s\n", port)
+	log.Printf("Starting Elogap API on port %s\n", port)
 	if err := r.Run(":" + port); err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to start server: %v", err)
 	}
+}
+
+func getPort() string {
+	if port := os.Getenv("PORT"); port != "" {
+		return port
+	}
+
+	return "8080"
 }
