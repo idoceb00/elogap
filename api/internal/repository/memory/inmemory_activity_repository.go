@@ -1,14 +1,11 @@
 package memory
 
 import (
-	"errors"
 	"time"
 
 	"github.com/idoceb00/elogap-api/internal/domain"
 	"github.com/idoceb00/elogap-api/internal/repository"
 )
-
-var ErrNotFound = errors.New("activity not found")
 
 type InMemoryActivityRepository struct {
 	data []domain.Activity
@@ -70,5 +67,5 @@ func (r *InMemoryActivityRepository) FindByID(id string) (*domain.Activity, erro
 			return &a, nil
 		}
 	}
-	return nil, ErrNotFound
+	return nil, repository.ErrNotFound
 }

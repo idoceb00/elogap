@@ -10,24 +10,30 @@ import (
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	r.Use(gin.Logger(), gin.Recovery())
 
 	config.ApplyCORS(r)
 
+	healthHandler, activityHandler := buildHandlers()
+
+	r.GET("/health", healthHandler.Get)
+
+	v1 := r.Group("/v1")
+	{
+		v1.GET("/health", healthHandler.Get)
+		v1.GET("/activities", activityHandler.List)
+		v1.GET("/activities/:id", activityHandler.GetByID)
+	}
+
+	return r
+}
+
+func buildHandlers() (*handlers.HealthHandler, *handlers.ActivityHandler) {
 	repo := memory.NewInMemoryActivityRepository()
 	svc := service.NewActivityService(repo)
 
 	health := handlers.NewHealthHandler()
 	activity := handlers.NewActivityHandler(svc)
 
-	r.GET("/health", health.Get)
-
-	v1 := r.Group("/v1")
-	{
-		v1.GET("/activities", activity.List)
-		v1.GET("/activities/:id", activity.GetByID)
-	}
-
-	return r
+	return health, activity
 }

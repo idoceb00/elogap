@@ -14,7 +14,7 @@ func main() {
 
 	log.Printf("Starting Elogap API on port %s\n", port)
 	if err := r.Run(":" + port); err != nil {
-		log.Fatal("failed to start server: %v", err)
+		log.Fatalf("failed to start server: %v", err)
 	}
 }
 
