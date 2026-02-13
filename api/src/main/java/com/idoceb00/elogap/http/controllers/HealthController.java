@@ -1,4 +1,4 @@
-package com.idoceb00.elogap.controllers;
+package com.idoceb00.elogap.http.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
