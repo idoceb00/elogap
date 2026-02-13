@@ -33,6 +33,7 @@ dist/
 build/
 coverage/
 *.local
+guidelines/
 
 # Vite
 .vite/
@@ -58,3 +59,4 @@ api-java/
 *.zip
 *.tar.gz
 *.rar
+
