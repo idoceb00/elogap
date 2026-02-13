@@ -1,4 +1,4 @@
-package com.idoceb00.elogap.http.controllers;
+package com.idoceb00.elogap.http.controller;
 
 import com.idoceb00.elogap.domain.Activity;
 import com.idoceb00.elogap.domain.MatchResult;
