@@ -1,12 +1,25 @@
-const DEFAULT_BASE_URL = "http://localhost:8080";
+// src/app/api/client.ts (o donde lo tengas)
+function normalizeBaseUrl(raw: string): string {
+  // remove trailing slash to avoid double slashes
+  return raw.replace(/\/+$/, "");
+}
 
 export function getApiBaseUrl(): string {
-  return import.meta.env.VITE_API_BASE_URL || DEFAULT_BASE_URL;
+  const envUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+
+  // safe default for local dev (non-docker)
+  const fallback = "http://localhost:8080";
+
+  return normalizeBaseUrl(envUrl?.trim() || fallback);
 }
 
 export async function apiGet<T>(path: string): Promise<T> {
   const baseUrl = getApiBaseUrl();
-  const res = await fetch(`${baseUrl}${path}`, {
+
+  // ensure path begins with /
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+
+  const res = await fetch(`${baseUrl}${cleanPath}`, {
     method: "GET",
     headers: { Accept: "application/json" },
   });
@@ -22,5 +35,5 @@ export async function apiGet<T>(path: string): Promise<T> {
     throw new Error(message);
   }
 
-  return res.json() as Promise<T>;
+  return (await res.json()) as T;
 }
