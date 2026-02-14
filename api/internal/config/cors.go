@@ -10,7 +10,10 @@ import (
 )
 
 func ApplyCORS(r *gin.Engine) {
-	origins := getAllowedOrigins()
+	origins := getEnvCSV("CORS_ALLOWED_ORIGINS", []string{
+		"http://localhost:5173",
+		"http://127.0.0.1:5173",
+	})
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     origins,
@@ -22,14 +25,21 @@ func ApplyCORS(r *gin.Engine) {
 	}))
 }
 
-func getAllowedOrigins() []string {
-	env := os.Getenv("CORS_ORIGINS")
-	if env == "" {
-		// default for local dev
-		return []string{
-			"http://localhost:5173",
-			"http://127.0.0.1:5173",
+func getEnvCSV(key string, fallback []string) []string {
+	v := strings.TrimSpace(os.Getenv(key))
+	if v == "" {
+		return fallback
+	}
+	parts := strings.Split(v, ",")
+	out := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			out = append(out, p)
 		}
 	}
-	return strings.Split(env, ",")
+	if len(out) == 0 {
+		return fallback
+	}
+	return out
 }
