@@ -25,6 +25,9 @@ Thumbs.db
 # Go build artifacts
 *.log
 
+# Air
+tmp/
+
 # --------------------
 # Node / Frontend
 # --------------------
