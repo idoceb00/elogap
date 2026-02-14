@@ -1,4 +1,3 @@
-// src/app/api/client.ts (o donde lo tengas)
 function normalizeBaseUrl(raw: string): string {
   // remove trailing slash to avoid double slashes
   return raw.replace(/\/+$/, "");

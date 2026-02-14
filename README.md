@@ -9,32 +9,51 @@ The project is intentionally minimal at this stage to establish a solid base arc
 
 ---
 
-## Tech Stack
+## 🚀 Tech Stack
 
-**Backend**
+### Backend
 - Go
 - Gin (HTTP framework)
 - In-memory repository (temporary, will be replaced by a database)
 
-**Frontend**
+### Frontend
 - React
 - Vite
 - TypeScript
 - pnpm
 
+## 🧪 Development Setup (Recommended)
+
+The easiest way to run the full stack in development mode is using Docker Compose.
+
+### 1️⃣ Create a `.env` file in the project root
+
+Example:
+
+```env
+API_PORT=
+UI_PORT=
+VITE_API_BASE_URL=
+```
+
 ---
 
-## Current Features
+### 2️⃣ Start the development environment
 
-- Activities list
-- Activity detail view
-- Backend filtering by result and champion
-- Frontend connected directly to the Go API
-- Placeholder pages for upcoming features
+From the project root:
+
+```bash
+docker compose up --build
+```
+
+This will start:
+
+- `api` → Go backend with live reload (Air)
+- `ui` → React frontend with Vite dev server
 
 ---
 
-## Running the Project
+## 🖥 Running Without Docker (Optional)
 
 ### Backend
 
@@ -42,14 +61,6 @@ The project is intentionally minimal at this stage to establish a solid base arc
 cd api
 go run ./cmd/api
 ```
-
-Runs on:
-
-```
-http://localhost:8080
-```
-
----
 
 ### Frontend
 
@@ -59,15 +70,19 @@ pnpm install
 pnpm dev
 ```
 
-Runs on:
+---
 
-```
-http://localhost:5173
-```
+## 📌 Project Status
+
+This is an early-stage version of the project.  
+The current focus is:
+
+- Solidifying backend architecture
+- Connecting frontend to real API endpoints
+- Preparing a scalable base for future features
+
+Future work will include persistent storage, authentication, advanced analytics, and production deployment setup.
 
 ---
 
-## Project Status
-
-This is an early-stage baseline release.  
-The architecture is set, the frontend and backend are connected, and the project is ready to evolve with new features.
+Built as a learning-focused full-stack project with long-term evolution in mind.
