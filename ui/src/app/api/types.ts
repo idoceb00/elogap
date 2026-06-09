@@ -57,3 +57,28 @@ export interface Insight {
   value: string;
   description?: string;
 }
+
+export interface MetricsSummary {
+  playerId: string;
+  range: string;
+  totalMatches: number;
+  winRate: number;
+  avgKda: number;
+  avgCsPerMin: number;
+  avgVision: number;
+  avgDamage: number;
+  avgDurationSeconds: number;
+}
+
+export interface TrendPoint {
+  date: string;
+  winRate: number;
+  kda: number;
+  csPerMin: number;
+}
+
+export interface MetricsTrends {
+  playerId: string;
+  range: string;
+  points: TrendPoint[];
+}

@@ -14,7 +14,7 @@ func NewRouter() *gin.Engine {
 
 	config.ApplyCORS(r)
 
-	healthHandler, activityHandler := buildHandlers()
+	healthHandler, activityHandler, metricsHandler := buildHandlers()
 
 	r.GET("/health", healthHandler.Get)
 
@@ -23,17 +23,22 @@ func NewRouter() *gin.Engine {
 		v1.GET("/health", healthHandler.Get)
 		v1.GET("/activities", activityHandler.List)
 		v1.GET("/activities/:id", activityHandler.GetByID)
+		v1.GET("/metrics/summary", metricsHandler.Summary)
+		v1.GET("/metrics/trends", metricsHandler.Trends)
 	}
 
 	return r
 }
 
-func buildHandlers() (*handlers.HealthHandler, *handlers.ActivityHandler) {
+func buildHandlers() (*handlers.HealthHandler, *handlers.ActivityHandler, *handlers.MetricsHandler) {
 	repo := memory.NewInMemoryActivityRepository()
-	svc := service.NewActivityService(repo)
+
+	activitySvc := service.NewActivityService(repo)
+	metricsSvc := service.NewMetricsService(repo)
 
 	health := handlers.NewHealthHandler()
-	activity := handlers.NewActivityHandler(svc)
+	activity := handlers.NewActivityHandler(activitySvc)
+	metrics := handlers.NewMetricsHandler(metricsSvc)
 
-	return health, activity
+	return health, activity, metrics
 }
