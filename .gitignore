@@ -52,11 +52,6 @@ guidelines/
 !.env.example
 
 # --------------------
-# Java (backup folder)
-# --------------------
-api-java/
-
-# --------------------
 # Archives
 # --------------------
 *.zip
