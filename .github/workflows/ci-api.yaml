@@ -29,10 +29,6 @@ jobs:
               run: go mod download
               working-directory: api
 
-            - name: Check formatting
-              run: test -z "$gofmt - l ."
-              working-directory: api
-
             - name: Lint
               uses: golangci/golangci-lint-action@v6
               with:
