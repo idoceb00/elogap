@@ -1,0 +1,46 @@
+name: Elogap API CI
+
+on: 
+    push:
+        branches: ['main']
+        paths:
+            - 'api/**'
+    pull_request:
+        branches: ['main']
+        paths:
+            - 'api/**'
+    workflow_dispatch:
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                go-version: '1.24'
+                cache: true
+
+            - name: Download dependencies
+              run: go mod download
+              working-directory: api
+
+            - name: Lint
+              uses: golangci/golangci-lint-action@v6
+              with:
+                version: latest
+                working-directory: api
+            
+            - name: Build
+              run: go build ./...
+              working-directory: api
+
+            - name: Test
+              run: go test ./...
+              working-directory: api
+
+
