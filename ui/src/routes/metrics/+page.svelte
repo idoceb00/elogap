@@ -6,7 +6,7 @@
   import CardTitle from '$lib/components/ui/card-title.svelte';
   import { getMetricsSummary, getMetricsTrends } from '$lib/api/metrics.js';
   import type { MetricsSummary, MetricsTrends } from '$lib/api/types.js';
-  import { Chart, Svg, Axis, Line, Tooltip } from 'layerchart';
+  import { Chart, Svg, Axis, Spline, Tooltip } from 'layerchart';
 
   let summary = $state<MetricsSummary | null>(null);
   let trends = $state<MetricsTrends | null>(null);
@@ -96,15 +96,20 @@
       </CardHeader>
       <CardContent>
         <div class="h-[300px]">
-          <Chart data={trends.points} x="date" y="winRate">
-            {#snippet children({ context })}
-              <Svg>
-                <Axis placement="bottom" />
-                <Axis placement="left" />
-                <Line class="stroke-primary" stroke-width={2} />
-                <Tooltip />
-              </Svg>
-            {/snippet}
+          <Chart data={trends.points} x="date" y="winRate" tooltip={{ mode: 'bisect-x' }}>
+            <Svg>
+              <Axis placement="bottom" />
+              <Axis placement="left" />
+              <Spline class="stroke-primary" />
+              <Tooltip.Root let:data>
+                <Tooltip.List>
+                  <Tooltip.Item label="Date" value={data.date} />
+                  <Tooltip.Item label="Win Rate" value={`${data.winRate}%`} />
+                  <Tooltip.Item label="KDA" value={data.kda} />
+                  <Tooltip.Item label="CS/min" value={data.csPerMin} />
+                </Tooltip.List>
+              </Tooltip.Root>
+            </Svg>
           </Chart>
         </div>
       </CardContent>
