@@ -37,6 +37,7 @@ build/
 coverage/
 *.local
 guidelines/
+.svelte-kit/
 
 # Vite
 .vite/

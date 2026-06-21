@@ -1,7 +1,7 @@
 # Elogap UI
 
 Frontend built with:
-- React
+- Svelte
 - Vite
 - TailwindCSS
 - shadcn/ui
@@ -9,5 +9,3 @@ Frontend built with:
 Run:
 pnpm install
 pnpm dev
-
-Probando Probando uno dos uno

@@ -41,14 +41,19 @@ Monorepo: Go backend in `api/`, React frontend in `ui/`, talking over a JSON HTT
 Note: `metrics` has **no** repository and is never persisted — it's computed on the fly
 from activities. Don't add a metrics store. (See Key Decisions.)
 
-**Frontend — React + React Router v7:**
+**Frontend — SvelteKit + Svelte 5:**
 
-    main.tsx → App.tsx + routes.ts → layouts/RootLayout.tsx → pages/*
-    api/ (client.ts = apiGet<T>() wrapper, metrics.ts, types.ts)
-    components/ui/ (shadcn/ui), styles/
-
-The frontend is inherited, un-audited Figma Make output — treat its patterns as
-observations, not gospel. See `ui/AGENTS.md`.
+    src/routes/                 file-based routing (one +page.svelte per route)
+      +layout.svelte            root layout: sidebar + topbar
+      +page.svelte              PerformanceOverview
+      metrics/+page.svelte      MetricDeepDive (LayerChart)
+      match-analysis/           MatchAnalysis + ActivityDetail [id]
+      settings/+page.svelte     Settings
+    src/lib/api/                client.ts (apiGet<T>()), metrics.ts, types.ts
+    src/lib/components/ui/      shadcn-svelte primitives
+    src/lib/components/         app components (coming-soon, etc.) 
+    
+    See `ui/AGENTS.md`.
 
 ## Conventions (repo-wide)
 
@@ -84,8 +89,9 @@ Layer-specific conventions live in the child guides. Repo-wide:
   — tests the public contract so internals refactor freely.
 - **`apiGet<T>()` is the only way the frontend calls the API** — one place for base URL,
   errors, future auth. Never `fetch` directly from a component.
-- **Fixed FE libraries:** `date-fns`, `recharts`, `lucide-react`. (Inherited libs like
-  MUI do NOT reflect this — don't imitate them; see `ui/AGENTS.md`.)
+- **Fixed FE libraries:** `layerchart` (charts), `@lucide/svelte` (icons),
+  shadcn-svelte (components), `clsx`/`tailwind-merge` (classes). Don't add
+  alternatives that duplicate these.
 
 ## Current Gaps — don't assume these exist; flag if a task needs one
 
