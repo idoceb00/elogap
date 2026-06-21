@@ -2,26 +2,27 @@ package main
 
 import (
 	"log"
-	"os"
 
+	"github.com/idoceb00/elogap-api/internal/config"
 	httptransport "github.com/idoceb00/elogap-api/internal/http"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
-	port := getPort()
+	cfg := config.Load()
+
+	_, err := gorm.Open(postgres.Open(cfg.DB.DSN()), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("DATABASE: failed to connect database: %v", err)
+	}
+
+	log.Println("DATABASE: connection established")
 
 	r := httptransport.NewRouter()
 
-	log.Printf("Starting Elogap API on port %s\n", port)
-	if err := r.Run(":" + port); err != nil {
-		log.Fatalf("failed to start server: %v", err)
+	log.Printf("SERVER: Starting Elogap API on port %s\n", cfg.Port)
+	if err := r.Run(":" + cfg.Port); err != nil {
+		log.Fatalf("SERVER: failed to start server: %v", err)
 	}
-}
-
-func getPort() string {
-	if port := os.Getenv("PORT"); port != "" {
-		return port
-	}
-
-	return "8080"
 }
