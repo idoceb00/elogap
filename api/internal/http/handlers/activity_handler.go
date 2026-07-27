@@ -7,19 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/idoceb00/elogap-api/internal/domain"
 	"github.com/idoceb00/elogap-api/internal/repository"
-	"github.com/idoceb00/elogap-api/internal/service"
+	"github.com/idoceb00/elogap-api/internal/services"
 )
 
 type ActivityHandler struct {
-	svc *service.ActivityService
+	svc *services.ActivityService
 }
 
-func NewActivityHandler(svc *service.ActivityService) *ActivityHandler {
+func NewActivityHandler(svc *services.ActivityService) *ActivityHandler {
 	return &ActivityHandler{svc: svc}
 }
 
 func (h *ActivityHandler) List(c *gin.Context) {
-	var filter service.ListActivitiesFilter
+	var filter services.ListActivitiesFilter
 
 	if v := c.Query("result"); v != "" {
 		r := domain.MatchResult(v)

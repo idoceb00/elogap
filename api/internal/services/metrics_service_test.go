@@ -1,4 +1,4 @@
-package service_test
+package services_test
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/idoceb00/elogap-api/internal/domain"
 	"github.com/idoceb00/elogap-api/internal/repository"
-	"github.com/idoceb00/elogap-api/internal/service"
+	"github.com/idoceb00/elogap-api/internal/services"
 )
 
 //
@@ -43,7 +43,7 @@ func TestMetricsService_Summary(t *testing.T) {
 	tests := []struct {
 		name    string
 		repo    repository.ActivityRepository
-		filter  service.MetricsFilter
+		filter  services.MetricsFilter
 		want    domain.MetricsSummary
 		wantErr bool
 	}{
@@ -57,7 +57,7 @@ func TestMetricsService_Summary(t *testing.T) {
 					{ID: "4", PlayerID: "p2", Result: domain.ResultWin, PlayedAt: now},
 				},
 			},
-			filter: service.MetricsFilter{
+			filter: services.MetricsFilter{
 				PlayerID: "p1",
 				Range:    "30d",
 			},
@@ -71,7 +71,7 @@ func TestMetricsService_Summary(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := service.NewMetricsService(tt.repo)
+			s := services.NewMetricsService(tt.repo)
 
 			got, err := s.Summary(tt.filter)
 			if err != nil {
@@ -105,7 +105,7 @@ func TestMetricsService_Trends(t *testing.T) {
 	tests := []struct {
 		name    string
 		repo    repository.ActivityRepository
-		filter  service.MetricsFilter
+		filter  services.MetricsFilter
 		wantLen int
 		wantErr bool
 	}{
@@ -151,7 +151,7 @@ func TestMetricsService_Trends(t *testing.T) {
 					},
 				},
 			},
-			filter: service.MetricsFilter{
+			filter: services.MetricsFilter{
 				PlayerID: "p1",
 				Range:    "30d",
 			},
@@ -162,7 +162,7 @@ func TestMetricsService_Trends(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := service.NewMetricsService(tt.repo)
+			s := services.NewMetricsService(tt.repo)
 
 			got, err := s.Trends(tt.filter)
 			if err != nil {

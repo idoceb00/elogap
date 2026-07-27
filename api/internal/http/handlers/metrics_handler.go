@@ -5,14 +5,14 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/idoceb00/elogap-api/internal/service"
+	"github.com/idoceb00/elogap-api/internal/services"
 )
 
 type MetricsHandler struct {
-	svc *service.MetricsService
+	svc *services.MetricsService
 }
 
-func NewMetricsHandler(svc *service.MetricsService) *MetricsHandler {
+func NewMetricsHandler(svc *services.MetricsService) *MetricsHandler {
 	return &MetricsHandler{svc: svc}
 }
 
@@ -20,7 +20,7 @@ func (h *MetricsHandler) Summary(c *gin.Context) {
 	playerID := strings.TrimSpace(c.Query("playerId"))
 	rng := strings.TrimSpace(c.DefaultQuery("range", "30d"))
 
-	res, err := h.svc.Summary(service.MetricsFilter{
+	res, err := h.svc.Summary(services.MetricsFilter{
 		PlayerID: playerID,
 		Range:    rng,
 	})
@@ -36,7 +36,7 @@ func (h *MetricsHandler) Trends(c *gin.Context) {
 	playerID := strings.TrimSpace(c.Query("playerId"))
 	rng := strings.TrimSpace(c.DefaultQuery("range", "30d"))
 
-	res, err := h.svc.Trends(service.MetricsFilter{
+	res, err := h.svc.Trends(services.MetricsFilter{
 		PlayerID: playerID,
 		Range:    rng,
 	})

@@ -5,7 +5,7 @@ import (
 	"github.com/idoceb00/elogap-api/internal/config"
 	"github.com/idoceb00/elogap-api/internal/http/handlers"
 	"github.com/idoceb00/elogap-api/internal/repository/memory"
-	"github.com/idoceb00/elogap-api/internal/service"
+	"github.com/idoceb00/elogap-api/internal/services"
 )
 
 func NewRouter() *gin.Engine {
@@ -33,8 +33,8 @@ func NewRouter() *gin.Engine {
 func buildHandlers() (*handlers.HealthHandler, *handlers.ActivityHandler, *handlers.MetricsHandler) {
 	repo := memory.NewInMemoryActivityRepository()
 
-	activitySvc := service.NewActivityService(repo)
-	metricsSvc := service.NewMetricsService(repo)
+	activitySvc := services.NewActivityService(repo)
+	metricsSvc := services.NewMetricsService(repo)
 
 	health := handlers.NewHealthHandler()
 	activity := handlers.NewActivityHandler(activitySvc)
