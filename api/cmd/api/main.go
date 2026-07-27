@@ -5,6 +5,7 @@ import (
 
 	"github.com/idoceb00/elogap-api/internal/config"
 	httptransport "github.com/idoceb00/elogap-api/internal/http"
+	"github.com/idoceb00/elogap-api/internal/repository/record"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -12,12 +13,16 @@ import (
 func main() {
 	cfg := config.Load()
 
-	_, err := gorm.Open(postgres.Open(cfg.DB.DSN()), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(cfg.DB.DSN()), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("DATABASE: failed to connect database: %v", err)
 	}
 
 	log.Println("DATABASE: connection established")
+
+	if err := db.AutoMigrate(&record.Summoner{}, &record.Activity{}); err != nil {
+		log.Fatalf("DATABASE: failed to run migrations: %v", err)
+	}
 
 	r := httptransport.NewRouter()
 
