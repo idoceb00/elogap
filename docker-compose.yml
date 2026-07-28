@@ -26,19 +26,46 @@ services:
       context: ./api
       dockerfile: Dockerfile.dev
     container_name: elogap-api-dev
-    # depends_on:
+    depends_on:
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     environment:
       - PORT=${API_PORT}
       - APP_ENV=${APP_ENV}
+      - DB_HOST=${PGHOST}
+      - DB_PORT=${PGPORT}
+      - DB_USER=${PGUSER}
+      - DB_PASSWORD=${PGPASSWORD}
+      - DB_NAME=${PGNAME}
     ports:
       - '8080:8080'
     volumes:
       - ./api:/app
     working_dir: /app
     command: ["air", "-c", ".air.toml"]
-
+  
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres-dev
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGNAME}
+    ports:
+      - '${PGPORT}:${PGPORT}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
 networks:
   elogapnet:
     driver: bridge
+
+volumes:
+  postgres_data:
