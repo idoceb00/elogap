@@ -9,7 +9,7 @@ like OP.gg: show what matters, hide the noise. No login, no accounts — not a s
 platform.
 
 <!-- Add a screenshot here, e.g.: ![Elogap — Match Analysis](docs/screenshot.png) -->
-
+![alt text](docs/screenshot.png)
 ## Tech Stack
 
 **Backend (`api/`)**
