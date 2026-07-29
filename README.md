@@ -1,88 +1,74 @@
 # Elogap
 
-Elogap is a full-stack web application focused on analyzing match activity and player performance.
+An open, read-only web portal for League of Legends competitive data. Search a player,
+see analytics on their matches — with Strava-style personalized **streaks** (win streaks,
+KDA streaks, CS/min progressions) as the differentiator.
 
-The goal of the project is to build a clean, extensible platform where match history, metrics and performance insights can be explored and evolved over time.  
-Right now, the foundation is in place: a Go backend serving activity data and a React frontend consuming it.
+The design philosophy is minimalism and precision, in contrast to the density of tools
+like OP.gg: show what matters, hide the noise. No login, no accounts — not a social
+platform.
 
-The project is intentionally minimal at this stage to establish a solid base architecture before adding more complex features.
+<!-- Add a screenshot here, e.g.: ![Elogap — Match Analysis](docs/screenshot.png) -->
+![alt text](docs/screenshot.png)
+## Tech Stack
 
----
+**Backend (`api/`)**
+- Go + Gin
+- Clean architecture (handlers → services → repository, dependencies pointing inward)
+- In-memory repository (baseline — see Project Status)
 
-## 🚀 Tech Stack
-
-### Backend
-- Go
-- Gin (HTTP framework)
-- In-memory repository (temporary, will be replaced by a database)
-
-### Frontend
-- React
-- Vite
-- TypeScript
+**Frontend (`ui/`)**
+- SvelteKit + Svelte 5 (runes)
+- TypeScript · Tailwind · shadcn-svelte
 - pnpm
 
-## 🧪 Development Setup (Recommended)
+**Tooling**
+- Docker Compose · `air` (Go live reload)
 
-The easiest way to run the full stack in development mode is using Docker Compose.
+## Architecture
 
-### 1️⃣ Create a `.env` file in the project root
+Monorepo with a Go backend in `api/` and a SvelteKit frontend in `ui/`, talking over a
+JSON HTTP API. The backend follows clean architecture: each layer has one
+responsibility, dependencies point inward toward a pure domain core, and wiring is done
+with explicit manual dependency injection in `router.go` — no framework, no global state.
+The repository layer sits behind interfaces so the data source can evolve without
+touching services or handlers.
 
-Example:
+## Running Locally
 
-```env
-API_PORT=
-UI_PORT=
-VITE_API_BASE_URL=
-```
+    # full stack
+    docker compose up --build
 
----
+    # backend only (api/)          # frontend only (ui/)
+    go run ./cmd/api               pnpm install
+                                   pnpm dev
 
-### 2️⃣ Start the development environment
+Environment variables are read from a `.env` file in the project root; check the
+`docker-compose.yml` and the config in `api/` for the current set.
 
-From the project root:
+## Project Status
 
-```bash
-docker compose up --build
-```
+Early-stage, learning-focused project. `main` runs on an **in-memory repository** —
+match data is seeded in memory and resets on restart; there is no live data source or
+database yet. The frontend is scaffolded (navigation, match-analysis views, filters and
+sorting) and consumes the API, with several views awaiting real data.
 
-This will start:
+## Active Development
 
-- `api` → Go backend with live reload (Air)
-- `ui` → React frontend with Vite dev server
+An open **draft pull request** (`feature/riot-integration`) is building the foundation
+for real data, ahead of integrating the Riot Games API as the live source:
 
----
+- **Persistence layer** — PostgreSQL + GORM, with schema created via AutoMigrate.
+- **Clean record/domain separation** — persistence structs (GORM tags, DB columns) live
+  in their own layer and map to/from the domain; the domain core stays free of any
+  persistence concern.
+- **Postgres repositories** — summoner and activity repositories with upsert semantics,
+  laying the groundwork for a cache-aside flow that respects the Riot API's rate limits.
 
-## 🖥 Running Without Docker (Optional)
+The PR is scoped to the persistence work that is done, with Riot integration noted as the
+next step. It's kept as a draft while that work continues.
 
-### Backend
+## Note
 
-```bash
-cd api
-go run ./cmd/api
-```
-
-### Frontend
-
-```bash
-cd ui
-pnpm install
-pnpm dev
-```
-
----
-
-## 📌 Project Status
-
-This is an early-stage version of the project.  
-The current focus is:
-
-- Solidifying backend architecture
-- Connecting frontend to real API endpoints
-- Preparing a scalable base for future features
-
-Future work will include persistent storage, authentication, advanced analytics, and production deployment setup.
-
----
-
-Built as a learning-focused full-stack project with long-term evolution in mind.
+Elogap is a personal, learning-oriented project; its scope is deliberately bounded and it
+is not intended for public deployment. Not affiliated with or endorsed by Riot Games.

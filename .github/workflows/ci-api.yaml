@@ -22,7 +22,7 @@ jobs:
             - name: Setup Go
               uses: actions/setup-go@v5
               with:
-                go-version: '1.24'
+                go-version: '1.26'
                 cache: true
 
             - name: Download dependencies
@@ -30,7 +30,7 @@ jobs:
               working-directory: api
 
             - name: Lint
-              uses: golangci/golangci-lint-action@v6
+              uses: golangci/golangci-lint-action@v7
               with:
                 version: latest
                 working-directory: api
