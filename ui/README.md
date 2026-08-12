@@ -4,7 +4,7 @@ Frontend built with:
 - Svelte
 - Vite
 - TailwindCSS
-- shadcn/ui
+- shadcn-svelte
 
 Run:
 pnpm install
